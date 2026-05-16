@@ -1,175 +1,405 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Katalog Kuliner Nusantara - Jelajahi kekayaan rasa khas Indonesia">
     <title>Katalog Kuliner Nusantara</title>
+    
+    <!-- Menggunakan font eksternal untuk tampilan lebih modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* Pengaturan Dasar */
+        /* CSS Variables untuk Tema Terang & Gelap (Dark Mode) */
+        :root {
+            --bg-color: #f8f9fa;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --card-bg: #ffffff;
+            --primary-color: #d63031;
+            --primary-hover: #b2bec3;
+            --secondary-color: #2d3436;
+            --border-radius: 16px;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-hover: 0 12px 24px rgba(214, 48, 49, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121416;
+            --text-main: #f5f6fa;
+            --text-muted: #a4b0be;
+            --card-bg: #1e2226;
+            --primary-color: #ff4757;
+            --secondary-color: #2f3542;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.2);
+            --shadow-hover: 0 12px 24px rgba(255, 71, 87, 0.2);
+        }
+
+        /* Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             line-height: 1.6;
+            transition: var(--transition);
         }
 
-        /* Bagian Header */
+        /* Header Modern */
         header {
-            background-color: #c0392b;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             text-align: center;
-            padding: 2rem 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 4rem 1rem 3rem;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            position: relative;
         }
 
         header h1 {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
             margin-bottom: 0.5rem;
+            letter-spacing: -1px;
         }
 
         header p {
             font-size: 1.1rem;
             opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        /* Container Utama */
+        /* Fitur Utilitas: Search & Dark Mode */
+        .utility-bar {
+            max-width: 1200px;
+            margin: -25px auto 2rem;
+            padding: 0 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-box {
+            flex-grow: 1;
+            max-width: 500px;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            box-shadow: var(--shadow-sm);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box:focus {
+            box-shadow: 0 0 0 3px rgba(214, 48, 49, 0.2);
+        }
+
+        .theme-btn {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: var(--text-main);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Layout Grid Cards */
         .container {
             max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            margin: 0 auto 4rem;
+            padding: 0 1.5rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
         }
 
         /* Desain Kartu Makanan */
         .card {
-            background: white;
-            border-radius: 10px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            overflow: hidden;
         }
 
         .card img {
             width: 100%;
-            height: 200px;
+            height: 220px;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #2d3436;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
         }
 
         .card-content {
-            padding: 1.5rem;
+            padding: 1.8rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .food-title {
-            font-size: 1.5rem;
-            color: #c0392b;
-            margin-bottom: 0.2rem;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
         }
 
         .food-origin {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .section-title {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 1.2rem 0 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        p.desc {
             font-size: 0.9rem;
-            color: #7f8c8d;
-            font-style: italic;
-            margin-bottom: 1rem;
-            display: inline-block;
-            background: #ecf0f1;
-            padding: 0.2rem 0.8rem;
-            border-radius: 15px;
+            color: var(--text-muted);
+            line-height: 1.7;
         }
 
-        h4 {
-            color: #2c3e50;
-            margin-top: 1rem;
-            margin-bottom: 0.3rem;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 0.2rem;
+        /* Tombol Pesan WhatsApp (Fitur Unik Gateway Bisnis) */
+        .btn-order {
+            margin-top: auto;
+            padding-top: 1.5rem;
         }
 
-        p {
-            font-size: 0.95rem;
-            color: #555;
-            text-align: justify;
+        .btn-wa {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #25D366;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-wa:hover {
+            background-color: #128C7E;
+            transform: scale(1.02);
         }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 1.5rem;
-            background-color: #2c3e50;
-            color: white;
-            margin-top: 2rem;
+            padding: 2rem;
+            background-color: var(--secondary-color);
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+
+        /* State jika pencarian tidak ditemukan */
+        .no-result {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            display: none;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Ensiklopedia Kuliner Nusantara</h1>
-        <p>Jelajahi kekayaan rasa dan sejarah dari berbagai masakan khas Indonesia.</p>
+        <h1>Ensiklopedia Kuliner</h1>
+        <p>Jelajahi mahakarya rasa Nusantara dan pesan langsung ke dapur kami.</p>
     </header>
 
-    <div class="container">
-        <!-- Kartu Makanan 1: Rendang -->
-        <div class="card">
-            <!-- Gambar menggunakan URL placeholder atau gambar gratis, bisa diganti dengan link gambar Anda sendiri -->
-            <img src="https://images.unsplash.com/photo-1634509426915-d57a9e62c114?auto=format&fit=crop&q=80&w=800" alt="Rendang">
-            <div class="card-content">
-                <h2 class="food-title">Rendang Daging</h2>
-                <span class="food-origin">📍 Minangkabau, Sumatera Barat</span>
-                
-                <h4>Bahan-bahan:</h4>
-                <p>Daging sapi, santan kelapa pekat, cabai merah, bawang merah, bawang putih, jahe, lengkuas, kunyit, serai, daun jeruk purut, dan daun kunyit.</p>
-                
-                <h4>Cara Pembuatan:</h4>
-                <p>Daging sapi dimasak perlahan dengan santan dan bumbu rempah yang dihaluskan. Proses memasak membutuhkan waktu berjam-jam di atas api kecil sambil terus diaduk hingga cairan menyusut, bumbu meresap sempurna, dan daging menjadi empuk serta berwarna cokelat kehitaman.</p>
-            </div>
-        </div>
-
-        <!-- Kartu Makanan 2: Sate Lilit -->
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&q=80&w=800" alt="Sate Lilit">
-            <div class="card-content">
-                <h2 class="food-title">Sate Lilit</h2>
-                <span class="food-origin">📍 Bali</span>
-                
-                <h4>Bahan-bahan:</h4>
-                <p>Daging ayam, babi, atau ikan yang dicincang halus, kelapa parut, santan, jeruk nipis, bawang merah, merica, dan batang serai (sebagai tusukan sate).</p>
-                
-                <h4>Cara Pembuatan:</h4>
-                <p>Daging cincang dicampur dengan bumbu halus (basa genep) dan kelapa parut. Adonan ini kemudian dililitkan pada batang serai yang tebal, lalu dipanggang di atas bara api arang kelapa hingga matang dan mengeluarkan aroma harum khas serai.</p>
-            </div>
-        </div>
-
-        <!-- Kartu Makanan 3: Pempek -->
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=800" alt="Pempek">
-            <div class="card-content">
-                <h2 class="food-title">Pempek Kapal Selam</h2>
-                <span class="food-origin">📍 Palembang, Sumatera Selatan</span>
-                
-                <h4>Bahan-bahan:</h4>
-                <p>Daging ikan tenggiri giling, tepung sagu, air es, garam, telur bebek (untuk isian). Kuah Cuko: Gula batok, asam jawa, cabai rawit, bawang putih, ebi sangrai.</p>
-                
-                <h4>Cara Pembuatan:</h4>
-                <p>Campurkan ikan tenggiri dengan air es dan garam, lalu uleni dengan tepung sagu hingga bisa dibentuk. Bentuk menyerupai kantong, isi dengan kuning telur bebek, lalu tutup rapat. Rebus pempek hingga mengapung, tiriskan, lalu goreng hingga renyah. Sajikan dengan siraman kuah cuko yang asam, manis, dan pedas.</p>
-            </div>
-        </div>
+    <div class="utility-bar">
+        <input type="text" id="searchInput" class="search-box" placeholder="Cari masakan favoritmu... (Misal: Rendang)">
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle Dark Mode">🌙</button>
     </div>
 
+    <main class="container" id="menuContainer">
+        <!-- Kartu 1 -->
+        <article class="card" data-name="rendang daging sapi">
+            <div class="card-img-wrapper">
+                <span class="badge">🔥 Pedas Gurih</span>
+                <img src="https://images.unsplash.com/photo-1634509426915-d57a9e62c114?auto=format&fit=crop&q=80&w=800" alt="Sajian Rendang Daging Sapi yang lezat" loading="lazy">
+            </div>
+            <div class="card-content">
+                <h2 class="food-title">Rendang Daging</h2>
+                <div class="food-origin">📍 Minangkabau, Sumatera Barat</div>
+                
+                <h3 class="section-title">🛒 Bahan Utama</h3>
+                <p class="desc">Daging sapi pilihan, santan pekat, rempah halus (cabai, jahe, lengkuas, serai).</p>
+                
+                <div class="btn-order">
+                    <!-- Format link WA menggunakan API Gateway standar -->
+                    <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20tertarik%20memesan%20Catering%20menu:%20*Rendang%20Daging*" class="btn-wa" target="_blank" rel="noopener noreferrer">
+                        💬 Pesan via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Kartu 2 -->
+        <article class="card" data-name="sate lilit bali ayam ikan">
+            <div class="card-img-wrapper">
+                <span class="badge">🌿 Autentik</span>
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&q=80&w=800" alt="Sate Lilit khas Bali pada piring saji" loading="lazy">
+            </div>
+            <div class="card-content">
+                <h2 class="food-title">Sate Lilit</h2>
+                <div class="food-origin">📍 Bali</div>
+                
+                <h3 class="section-title">🛒 Bahan Utama</h3>
+                <p class="desc">Daging ikan/ayam cincang, kelapa parut, basa genep, dililit pada batang serai segar.</p>
+                
+                <div class="btn-order">
+                    <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20tertarik%20memesan%20Catering%20menu:%20*Sate%20Lilit*" class="btn-wa" target="_blank" rel="noopener noreferrer">
+                        💬 Pesan via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Kartu 3 -->
+        <article class="card" data-name="pempek kapal selam cuko">
+            <div class="card-img-wrapper">
+                <span class="badge">⭐ Terlaris</span>
+                <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=800" alt="Pempek Kapal Selam dengan kuah cuko" loading="lazy">
+            </div>
+            <div class="card-content">
+                <h2 class="food-title">Pempek Kapal Selam</h2>
+                <div class="food-origin">📍 Palembang, Sumatera Selatan</div>
+                
+                <h3 class="section-title">🛒 Bahan Utama</h3>
+                <p class="desc">Ikan tenggiri segar, sagu, telur bebek (isian), disajikan dengan kuah cuko pedas manis.</p>
+                
+                <div class="btn-order">
+                    <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20tertarik%20memesan%20Catering%20menu:%20*Pempek%20Kapal%20Selam*" class="btn-wa" target="_blank" rel="noopener noreferrer">
+                        💬 Pesan via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </article>
+        
+        <div id="noResult" class="no-result">Pencarian tidak ditemukan 🍽️</div>
+    </main>
+
     <footer>
-        <p>&copy; 2026 Kuliner Nusantara. Dibuat dengan cinta untuk masakan Indonesia.</p>
+        <p>&copy; 2026 Kuliner Nusantara. Optimalisasi UI/UX dengan ❤️.</p>
     </footer>
 
+    <!-- Logika JavaScript Interaktif -->
+    <script>
+        // 1. Fitur Dark Mode terintegrasi (Modern & Minimalis)
+        const themeToggle = document.getElementById('themeToggle');
+        const root = document.documentElement;
+        
+        // Cek preferensi user sebelumnya dari LocalStorage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        root.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = root.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // 2. Fitur Live Search Real-time
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.card');
+        const noResult = document.getElementById('noResult');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            let hasVisibleCards = false;
+
+            cards.forEach(card => {
+                // Mencari berdasarkan data-name atribut agar lebih akurat
+                const keywords = card.getAttribute('data-name');
+                if (keywords.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                    hasVisibleCards = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Tampilkan pesan jika makanan tidak ada
+            noResult.style.display = hasVisibleCards ? 'none' : 'block';
+        });
+    </script>
 </body>
 </html>
