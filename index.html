@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Katalog Kuliner Nusantara - Jelajahi kekayaan rasa khas Indonesia">
     <title>Katalog Kuliner Nusantara</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS Variables */
         :root {
             --bg-color: #f8f9fa;
             --text-main: #2d3436;
@@ -48,7 +46,6 @@
             transition: var(--transition);
         }
 
-        /* Header */
         header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
@@ -63,7 +60,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Utility Bar (Search & Theme) */
         .utility-bar {
             max-width: 1200px;
             margin: -25px auto 2rem;
@@ -85,6 +81,7 @@
             color: var(--text-main);
             outline: none;
             transition: var(--transition);
+            font-size: 1rem;
         }
 
         .theme-btn {
@@ -99,9 +96,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            color: var(--text-main);
         }
 
-        /* Container & Cards */
         .container {
             max-width: 1200px;
             margin: 0 auto 4rem;
@@ -118,6 +115,8 @@
             box-shadow: var(--shadow-sm);
             cursor: pointer;
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
@@ -125,15 +124,31 @@
             box-shadow: var(--shadow-hover);
         }
 
-        .card img {
+        .card-img-wrapper {
             width: 100%;
             height: 220px;
+            background-color: #ecf0f1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
         }
 
         .card-content {
             padding: 1.5rem;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .food-title {
@@ -145,22 +160,21 @@
         .food-origin {
             font-size: 0.9rem;
             color: var(--text-muted);
+            margin-bottom: 1rem;
         }
 
         .btn-view {
-            display: inline-block;
-            margin-top: 1rem;
-            padding: 0.5rem 1.5rem;
+            margin-top: auto;
+            padding: 0.6rem 1.5rem;
             background: var(--bg-color);
             border: 1px solid var(--text-muted);
             color: var(--text-main);
             border-radius: 20px;
             font-size: 0.9rem;
             font-weight: 600;
-            pointer-events: none; /* Klik diteruskan ke kartu utama */
+            pointer-events: none;
         }
 
-        /* Modal / Popup Styles */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -210,9 +224,6 @@
             font-size: 1.2rem;
             cursor: pointer;
             z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             color: #333;
         }
 
@@ -258,7 +269,6 @@
             background-color: #128C7E;
         }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 2rem;
@@ -282,16 +292,16 @@
     </header>
 
     <div class="utility-bar">
-        <input type="text" id="searchInput" class="search-box" placeholder="Cari makanan... (Cth: Pempek)">
+        <input type="text" id="searchInput" class="search-box" placeholder="Cari makanan... (Cth: Pempek)" />
         <button id="themeToggle" class="theme-btn">🌙</button>
     </div>
 
-    <!-- Data makanan disimpan di atribut HTML -->
     <main class="container" id="menuContainer">
-        <!-- Kartu 1: Rendang -->
-        <article class="card" onclick="openModal('rendang')" data-name="rendang daging sapi">
-            <!-- Gambar diperbarui menggunakan link Wikimedia yang sangat stabil -->
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Rendang_Daging_Sapi.JPG/800px-Rendang_Daging_Sapi.JPG" alt="Rendang">
+        
+        <article class="card" data-id="rendang" data-name="rendang daging sapi">
+            <div class="card-img-wrapper">
+                <img src="rendang.jpg" alt="Rendang" class="food-img" />
+            </div>
             <div class="card-content">
                 <h2 class="food-title">Rendang Daging</h2>
                 <div class="food-origin">📍 Minangkabau, Sumbar</div>
@@ -299,9 +309,10 @@
             </div>
         </article>
 
-        <!-- Kartu 2: Sate Lilit -->
-        <article class="card" onclick="openModal('satelilit')" data-name="sate lilit bali ayam babi ikan">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Sate_Lilit_Bali.jpg/800px-Sate_Lilit_Bali.jpg" alt="Sate Lilit">
+        <article class="card" data-id="satelilit" data-name="sate lilit bali">
+            <div class="card-img-wrapper">
+                <img src="sate.jpg" alt="Sate Lilit" class="food-img" />
+            </div>
             <div class="card-content">
                 <h2 class="food-title">Sate Lilit</h2>
                 <div class="food-origin">📍 Bali</div>
@@ -309,9 +320,10 @@
             </div>
         </article>
 
-        <!-- Kartu 3: Pempek -->
-        <article class="card" onclick="openModal('pempek')" data-name="pempek kapal selam palembang cuko">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Pempek_Kapal_Selam_Palembang.jpg/800px-Pempek_Kapal_Selam_Palembang.jpg" alt="Pempek">
+        <article class="card" data-id="pempek" data-name="pempek kapal selam palembang cuko">
+            <div class="card-img-wrapper">
+                <img src="pempek.jpg" alt="Pempek" class="food-img" />
+            </div>
             <div class="card-content">
                 <h2 class="food-title">Pempek Kapal Selam</h2>
                 <div class="food-origin">📍 Palembang, Sumsel</div>
@@ -323,14 +335,13 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Kuliner Nusantara. Dibuat dengan ❤️.</p>
+        <p>&copy; 2026 Kuliner Nusantara.</p>
     </footer>
 
-    <!-- Elemen Modal / Popup (Awalnya Tersembunyi) -->
     <div class="modal-overlay" id="foodModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">✖</button>
-            <img src="" alt="" id="modalImg" class="modal-img">
+            <button class="close-btn" id="closeModalBtn">✖</button>
+            <img src="" alt="Detail Makanan" id="modalImg" class="modal-img" />
             <div class="modal-body">
                 <h2 class="food-title" id="modalTitle">Judul Makanan</h2>
                 <div class="food-origin" id="modalOrigin">Asal</div>
@@ -341,7 +352,6 @@
                 <h4>👨‍🍳 Cara Pembuatan:</h4>
                 <p id="modalProcess">Cara pembuatan akan muncul di sini.</p>
                 
-                <!-- Nomor WA diatur di JavaScript -->
                 <a href="#" id="modalWaBtn" class="btn-wa" target="_blank">
                     💬 Pesan via WhatsApp
                 </a>
@@ -349,93 +359,103 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
     <script>
-        // Database Data Makanan
         const foodData = {
             'rendang': {
                 title: 'Rendang Daging',
                 origin: '📍 Minangkabau, Sumatera Barat',
-                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Rendang_Daging_Sapi.JPG/800px-Rendang_Daging_Sapi.JPG',
+                img: 'rendang.jpg',
                 ingredients: 'Daging sapi, santan kelapa pekat, cabai merah, bawang merah, bawang putih, jahe, lengkuas, kunyit, serai, daun jeruk purut, dan daun kunyit.',
-                process: 'Daging sapi dimasak perlahan dengan santan dan bumbu rempah yang dihaluskan. Proses memasak membutuhkan waktu berjam-jam di atas api kecil sambil terus diaduk hingga cairan menyusut, bumbu meresap sempurna, dan daging menjadi empuk serta berwarna cokelat kehitaman.'
+                process: 'Daging sapi dimasak perlahan dengan santan dan bumbu rempah yang dihaluskan. Proses memasak membutuhkan waktu berjam-jam di atas api kecil.'
             },
             'satelilit': {
                 title: 'Sate Lilit',
                 origin: '📍 Bali',
-                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Sate_Lilit_Bali.jpg/800px-Sate_Lilit_Bali.jpg',
-                ingredients: 'Daging ayam atau ikan yang dicincang halus, kelapa parut, santan, jeruk nipis, bawang merah, merica, dan batang serai (sebagai tusukan sate).',
-                process: 'Daging cincang dicampur dengan bumbu halus (basa genep) dan kelapa parut. Adonan ini kemudian dililitkan pada batang serai yang tebal, lalu dipanggang di atas bara api arang kelapa hingga matang dan mengeluarkan aroma harum.'
+                img: 'sate.jpg',
+                ingredients: 'Daging ayam atau ikan yang dicincang halus, kelapa parut, santan, jeruk nipis, bawang merah, merica, dan batang serai.',
+                process: 'Daging cincang dicampur bumbu halus, dililitkan pada batang serai, lalu dipanggang di atas bara api arang kelapa hingga matang.'
             },
             'pempek': {
                 title: 'Pempek Kapal Selam',
                 origin: '📍 Palembang, Sumatera Selatan',
-                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Pempek_Kapal_Selam_Palembang.jpg/800px-Pempek_Kapal_Selam_Palembang.jpg',
-                ingredients: 'Daging ikan tenggiri giling, tepung sagu, air es, garam, telur bebek (untuk isian). Kuah Cuko: Gula batok, asam jawa, cabai rawit, bawang putih.',
-                process: 'Campurkan ikan tenggiri dengan air es dan garam, lalu uleni dengan tepung sagu hingga bisa dibentuk. Bentuk kantong, isi kuning telur, tutup rapat. Rebus hingga mengapung, tiriskan, lalu goreng hingga renyah.'
+                img: 'pempek.jpg',
+                ingredients: 'Daging ikan tenggiri giling, tepung sagu, air es, garam, telur bebek. Kuah Cuko: Gula batok, asam jawa, cabai rawit, bawang putih.',
+                process: 'Uleni ikan dengan tepung sagu. Bentuk kantong, isi kuning telur, tutup rapat. Rebus hingga mengapung, tiriskan, lalu goreng hingga renyah.'
             }
         };
 
-        // Nomor WA Anda
         const nomorWA = '6287884495106'; 
 
-        // Logika Modal
-        const modal = document.getElementById('foodModal');
-        
-        function openModal(foodId) {
-            const data = foodData[foodId];
-            
-            // Mengisi data ke dalam popup
-            document.getElementById('modalImg').src = data.img;
-            document.getElementById('modalTitle').textContent = data.title;
-            document.getElementById('modalOrigin').textContent = data.origin;
-            document.getElementById('modalIngredients').textContent = data.ingredients;
-            document.getElementById('modalProcess').textContent = data.process;
-            
-            // Format Link WhatsApp dinamis sesuai judul makanan
-            const waText = encodeURIComponent(`Halo Admin, saya tertarik memesan menu: *${data.title}*. Apakah bisa?`);
-            document.getElementById('modalWaBtn').href = `https://wa.me/${nomorWA}?text=${waText}`;
+        // 1. Tangani Gambar Error (Tanpa HTML Merah)
+        const placeholderImg = 'https://placehold.co/800x400/eeeeee/c0392b?text=Foto+Menyusul';
+        document.querySelectorAll('img.food-img').forEach(function(img) {
+            img.addEventListener('error', function() {
+                this.src = placeholderImg;
+            });
+        });
 
-            // Tampilkan Modal
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Kunci scroll layar utama
-        }
+        // 2. Logika Modal (Pop-up)
+        const modal = document.getElementById('foodModal');
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(function(card) {
+            card.addEventListener('click', function() {
+                const foodId = this.getAttribute('data-id');
+                const data = foodData[foodId];
+                
+                document.getElementById('modalTitle').textContent = data.title;
+                document.getElementById('modalOrigin').textContent = data.origin;
+                document.getElementById('modalIngredients').textContent = data.ingredients;
+                document.getElementById('modalProcess').textContent = data.process;
+                
+                const imgEl = document.getElementById('modalImg');
+                imgEl.src = data.img;
+                imgEl.onerror = function() {
+                    this.src = placeholderImg;
+                };
+                
+                const waText = encodeURIComponent('Halo Admin, saya tertarik memesan menu: *' + data.title + '*. Apakah bisa?');
+                document.getElementById('modalWaBtn').href = 'https://wa.me/' + nomorWA + '?text=' + waText;
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
 
         function closeModal() {
             modal.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Buka scroll layar utama
+            document.body.style.overflow = 'auto';
         }
 
-        // Tutup modal jika user klik area hitam di luar popup
+        document.getElementById('closeModalBtn').addEventListener('click', closeModal);
         modal.addEventListener('click', function(e) {
             if (e.target === modal) {
                 closeModal();
             }
         });
 
-        // Fitur Dark Mode
+        // 3. Fitur Dark Mode
         const themeToggle = document.getElementById('themeToggle');
         const root = document.documentElement;
         const savedTheme = localStorage.getItem('theme') || 'light';
         root.setAttribute('data-theme', savedTheme);
         themeToggle.textContent = savedTheme === 'light' ? '🌙' : '☀️';
 
-        themeToggle.addEventListener('click', () => {
+        themeToggle.addEventListener('click', function() {
             const newTheme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
             root.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             themeToggle.textContent = newTheme === 'light' ? '🌙' : '☀️';
         });
 
-        // Fitur Search
+        // 4. Fitur Live Search
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const term = e.target.value.toLowerCase().trim();
-            const cards = document.querySelectorAll('.card');
             let found = false;
 
-            cards.forEach(card => {
+            cards.forEach(function(card) {
                 if (card.getAttribute('data-name').includes(term)) {
-                    card.style.display = 'block';
+                    card.style.display = 'flex';
                     found = true;
                 } else {
                     card.style.display = 'none';
